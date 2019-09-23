@@ -8,7 +8,7 @@
 <script src="/resources/lib/jquery.min.js"></script>
 <script src="/resources/os/exif-js/exif.js"></script>
 <script src="/resources/js/photo.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5bd70be4e4d73aa0679a9586b84780b7"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4bc9fd89e0d9f1ce0539a55bca454e24"></script>
 </content>
 <head>
 	<style>
