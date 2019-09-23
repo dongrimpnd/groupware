@@ -25,7 +25,7 @@ $(document).ready(function() {
 		    		       }
 		    		   ]
 		    	   },
-		    	   {position: '부장', name: '김나영3', 'relationship': '101', team: 'team2', leader: 'Y',
+		    	   {position: '부장', name: '김나영', 'relationship': '101', team: 'team2', leader: 'Y',
 		    		   children: [
 		    		       {position: '대리', name: '서현민', 'relationship': '101', team: 'team2', leader: 'N',
 		    		    	  children: [{position: '사원', name: '유남규', 'relationship': '100', team: 'team2', leader: 'N'}]   
