@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.sawonMapper">
+	
+	<resultMap id="RM_selectSawon" type="Sawon">
+		<result column="사원코드" property="sawonCode" javaType="string"/>
+		<result column="사원아이디" property="sawonId" javaType="string" />
+		<result column="사원명" property="sawonName" javaType="string"/>
+		<result column="비밀번호" property="sawonPassword" javaType="string"/>
+		<result column="부서코드" property="sawonDepartment" javaType="string"/>
+		<result column="직급코드" property="sawonPosition" javaType="string"/>
+		<result column="직급명" property="sawonPositionName" javaType="string"/>
+		<result column="좌석번호" property="seatNum" javaType="int"/>
+		<result column="팀코드" property="sawonTeam" javaType="String"/>
+		<result column="연락처" property="sawonPhone" javaType="String"/>
+		<result column="내선번호" property="sawonInnerPhone" javaType="String"/>
+		<result column="이메일" property="sawonEmail" javaType="String"/>
+		<result column="생년월일" property="sawonBirthday" javaType="String"/>
+		<result column="팀리더" property="sawonTeamLeader" javaType="String"/>
+		<result column="직급구별" property="positionGubun" javaType="String"/>
+		<result column="재택근무" property="jaetaeg" javaType="String"/>
+		<result column="rfid" property="rfid" javaType="String" />
+		<result column="서명" property="signature" javaType="String"/>
+	 	<collection property="authorities" column="사원코드" javaType="java.util.ArrayList"
+	 				ofType="Authority" select="selectAuthorities" />
+	</resultMap>
+	
+	<select id="selectSawonInfo" parameterType="string" resultMap="RM_selectSawon">
+		select 사원코드, 사원아이디, 사원명, 비밀번호, t1.직급코드, t2.직급명, t3.부서명, t1.부서코드, t1.좌석번호, t1.팀코드, t1.연락처, t1.내선번호, t1.이메일, t1.생년월일, t1.팀리더, t2.직급구별, t2.직급명, t1.서명, isnull(t1.재택근무, 'N') 재택근무
+		  from [동림].[dbo].[사원] t1
+		  left outer join [동림].[dbo].[직급] t2
+		    on t1.직급코드 = t2.직급코드
+		  left outer join [동림].[dbo].[부서] t3
+		    on t1.부서코드 = t3.부서코드
+		 where 사원아이디 = #{sawonId}
+	</select>
+	
+	<select id="selectSawonInfoForVacation" parameterType="map" resultType="map">
+		select 사원코드 sawonCode, 사원아이디 sawonId, 사원명 sawonName, t2.직급명 sawonPosition
+		  from [동림].[dbo].[사원] t1
+		  left outer join [동림].[dbo].[직급] t2
+		    on t1.직급코드 = t2.직급코드
+		 <choose>
+		 <when test="imwon != null">
+		 where 부서코드 = #{department}
+		 </when>
+		 <when test="leader != null">
+		 where T1.팀코드 in (
+		 	select T1.팀코드 
+			  from [동림].[dbo].[관리팀] T1
+			 inner join [동림].[dbo].[관리팀] T2 
+			    on  T1.사원코드 = T2.사원코드
+			 inner join [동림].[dbo].[사원] T3 
+			    on T1.사원코드 = T3.사원코드
+			 inner join [동림].[dbo].[직급] T4 
+			    on T3.직급코드 = T4.직급코드
+			 where T2.팀코드 = #{teamCode} 
+			   and T1.부서코드 = #{department}
+			   and T4.직급구별 = 2 
+		 )
+		 </when>
+		 <otherwise>
+		 where 사원코드 = #{sawonCode}
+		 </otherwise>
+		 </choose>
+	</select>
+	
+	<select id="selectAuthorities" parameterType="string" resultType="Authority">
+		select b.[권한이름] as authName 
+		  from [동림].[dbo].[사원권한] a
+		 inner join [동림].[dbo].[권한] b
+		    on a.[권한번호] = b.[권한번호]
+		 where a.[사원코드] = #{sawonCode}
+	</select>
+	
+	<insert id="insertSawon" parameterType="Sawon">
+		insert into [동림].[dbo].[사원] (사원명, 사원아이디, 비밀번호, 연락처, 내선번호, 이메일, 생년월일, 직급코드, 부서코드, 팀코드, 팀리더, 시스템등록일)
+		values (
+			#{sawonName},
+			#{sawonId},
+			#{sawonPassword},
+			#{sawonPhone},
+			#{sawonInnerPhone},
+			#{sawonEmail},
+			#{sawonBirthday},
+			#{sawonPosition},
+			#{sawonDepartment},
+		<choose>
+			<when test="isImwon">
+			null,
+			</when>
+			<otherwise>
+			#{sawonTeam},
+			</otherwise>
+		</choose>
+			'N',<!-- #{sawonTeamLeader},-->
+			getDate())
+			
+		<selectKey keyProperty="sawonCode" resultType="String" order="AFTER">
+        	SELECT IDENT_CURRENT('[동림].[dbo].[사원]')
+    	</selectKey>
+	</insert>
+	
+	<select id="selectMyDepartmentSawonList" statementType="CALLABLE" parameterType="map" resultType="Sawon">
+		{call [동림].[dbo].[UP_부서FLOORMAP](
+			#{department, mode=IN, jdbcType=INTEGER, javaType=int}
+		)}
+	</select>
+	
+	<select id="selectTodayMyGeuntaeByMobile" statementType="CALLABLE" parameterType="map" resultType="Sawon">
+		{call [동림].[dbo].[UP_부서FLOORMAP_MOBILE](
+			#{department, mode=IN, jdbcType=INTEGER, javaType=int},
+			#{sawonCode, mode=IN, jdbcType=INTEGER, javaType=int}
+		)}
+	</select>
+	
+	<select id="selectTodayVacationAllSawon" statementType="CALLABLE" parameterType="map" resultType="map">
+		{call [동림].[dbo].[UP_휴가사원](
+			#{department, mode=IN, jdbcType=INTEGER, javaType=int}
+		)}
+	</select>
+	
+	<select id="selectTodayPlanAllSawon" statementType="CALLABLE" parameterType="map" resultType="map">
+		{call [동림].[dbo].[UP_사원일정](
+			#{department, mode=IN, jdbcType=INTEGER, javaType=int}
+		)}
+	</select>
+	
+	<insert id="insertDevice" statementType="CALLABLE" parameterType="map">
+		{call [동림].[dbo].[UP_앱등록](
+			#{token, mode=IN, jdbcType=VARCHAR, javaType=string},
+			#{sawonCode, mode=IN, jdbcType=VARCHAR, javaType=string},
+			#{kind, mode=IN, jdbcType=VARCHAR, javaType=string},
+			#{result, mode=OUT, jdbcType=VARCHAR, javaType=string}
+		)}
+	</insert>
+	
+	<update id="updateSawon" parameterType="Sawon">
+		update [동림].[dbo].[사원]
+		   set 사원아이디 = #{sawonId},
+		   	       사원명 = #{sawonName},
+		   	       부서코드 = #{sawonDepartment},
+		<choose>
+			<when test="isImwon">
+			       팀코드 = null,
+			</when>
+			<otherwise>
+			       팀코드 = #{sawonTeam},
+			</otherwise>
+		</choose>
+		   	       직급코드 = #{sawonPosition},
+		   	       비밀번호 = #{sawonPassword},
+		   	       연락처 = #{sawonPhone},
+		   	       내선번호 = #{sawonInnerPhone},
+		   	       이메일 = #{sawonEmail},
+		   	       생년월일 = #{sawonBirthday},
+<!-- 		   	       팀리더 = #{sawonTeamLeader}, -->
+		   	       시스템등록일 = getDate()    
+		 where 사원코드 = #{sawonCode}    
+	</update>
+	
+	<insert id="insertAuthority" parameterType="string">
+		insert into [동림].[dbo].[사원권한](사원코드, 권한번호)
+		values (#{sawonCode}, 1)
+	</insert>
+	
+	<update id="updateSawonSign" parameterType="map">
+		update [동림].[dbo].[사원]
+		   set 서명 = #{sign}
+		 where 사원코드 = #{sawonCode}
+	</update>
+	
+	<select id="selectSawonDeviceList" parameterType="string" resultType="string">
+		select [토큰]
+		  from [동림].[dbo].[앱정보]
+		 where [사원코드] = #{sawonCode}
+	</select>
+	
+	<select id="selectSawonAllDevices" resultType="string">
+		select [토큰]
+		  from [동림].[dbo].[앱정보]
+	</select>
+	
+	<resultMap type="map" id="RM_OverworkHistory">
+		<result column="야근일자" property="overworkDate" javaType="string"/>
+		<result column="출근시간" property="startDate" javaType="string"/>
+		<result column="퇴근시간" property="endDate" javaType="string"/>
+		<result column="야근6시부터" property="fromSix" javaType="string"/>
+		<result column="야근요일" property="overworkYoil" javaType="string"/>
+		<result column="야근시간" property="overworkTime" javaType="int"/>
+	</resultMap>
+	
+	<select id="selectSawonOverworkHistory" parameterType="map" statementType="CALLABLE" resultMap="RM_OverworkHistory">
+		{call [동림].[dbo].[UP_야근내역FOR수당](
+			#{searchYear, mode=IN, jdbcType=INTEGER, javaType=int},
+			#{searchMonth, mode=IN, jdbcType=INTEGER, javaType=int},
+			#{sawonCode, mode=IN, jdbcType=INTEGER, javaType=int}
+		)}
+	</select>
+	
+	<select id="selectSawonVacationHistory" parameterType="map" resultType="map">
+		select case when 결재서브타입 = 1 then '연차'
+					when 결재서브타입 = 2 then '보건'
+					when 결재서브타입 = 3 then '청원'
+					when 결재서브타입 = 4 then '공가'
+					when 결재서브타입 = 5 then '병가'
+					when 결재서브타입 = 6 then '교육'
+					when 결재서브타입 = 7 then '기타'
+					when 결재서브타입 = 8 then '반차'
+					when 결재서브타입 = 9 then '대체휴가'
+					else '기타'
+			   end vType, 휴가시작일 vStartDate, 휴가종료일 vEndDate, 휴가기간  vTerm, 기안내용_PLAIN vContent
+		  from [동림].[dbo].[상신] T1
+		 inner join [동림].[dbo].[사원] T2
+		    on T1.기안자 = T2.사원코드
+		 where T1.결재타입 = 2
+		   and T1.처리상태 = 'C'
+		   and T1.기안자 = #{sawonCode}
+		   and T1.휴가시작년도  = year(getDate())
+		 <choose>
+		 <when test="imwon != null">
+		   and T2.부서코드 = #{department}
+		 </when>
+		 <when test="leader != null">
+		   and T2.팀코드 in (
+		   	   select T1.팀코드 
+			  	 from [동림].[dbo].[관리팀] T1
+			 	inner join [동림].[dbo].[관리팀] T2 
+			       on  T1.사원코드 = T2.사원코드
+			    inner join [동림].[dbo].[사원] T3 
+			       on T1.사원코드 = T3.사원코드
+			 	inner join [동림].[dbo].[직급] T4 
+			       on T3.직급코드 = T4.직급코드
+			 	where T2.팀코드 = #{teamCode} 
+			   	  and T1.부서코드 = #{department}
+			      and T4.직급구별 = 2 
+		   )
+		 </when>
+		 </choose>
+		 order by 휴가시작일 asc
+	</select>
+	
+	<select id="selectSawonSeatNum" parameterType="string" resultType="string">
+		select isnull(좌석번호, -1)
+		  from [동림].[dbo].[사원]
+		 where 사원코드 = #{sawonCode}
+	</select>
+	
+	<select id="selectSawonCodeByRfid" parameterType="string" resultType="string">
+		select 사원코드
+		  from [동림].[dbo].[사원]
+		 where rfid = #{rfid}
+	</select>
+</mapper>

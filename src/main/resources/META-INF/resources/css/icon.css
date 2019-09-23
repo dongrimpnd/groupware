@@ -1,0 +1,46 @@
+.icon-search {background-image: url(../images/search.gif) !important; }
+.icon-add {background-image : url(../images/add.png) !important;}
+.icon-del {background-image : url(../images/delete.png) !important;}
+.icon-modi {background-image : url(../images/modify.gif) !important;  background-repeat:no-repeat;}
+.icon-user {background-image : url(../images/icon_user.gif) !important;}
+.icon-window {background-image : url(../images/new_window.gif) !important;}
+.icon-close {background-image : url(../images/close.gif) !important;}
+.icon-refresh {background-image : url(../images/refresh.png) !important; background-size: 16px 16px;}
+.tree-expand {background-image : url(../images/tree_expand.gif) !important;}
+.tree-collapse {background-image : url(../images/tree_collapse.gif) !important;}
+.reg {background-image : url(../images/text_edit.gif) !important;}
+.icon-logout {background-image: url(../images/logout.png) !important; background-size: 16px 16px;}
+.icon-gotowork {background-image: url(../images/gotowork.png) !important; background-size: 16px 16px;}
+.icon-offwork {background-image: url(../images/offwork.png) !important; background-size: 16px 16px;}
+.icon-myinfo {background-image: url(../images/myinfo.png) !important; background-size: 16px 16px;}
+.icon-position {background-image: url(../images/position.png) !important; background-size: 16px 16px;}
+.icon-sign {background-image: url(../images/pencil.png) !important; background-size: 16px 16px;}
+.icon-gyeoljae {background-image: url(../images/gyeoljae.png) !important; background-size: 16px 16px;}
+.icon-reject {background-image: url(../images/reject.png) !important; background-size: 16px 16px;}
+.icon-gyeoljae-receive {background-image: url(../images/download.png) !important; background-size: 16px 16px;}
+.icon-gyeoljae-sangsin {background-image: url(../images/upload.png) !important; background-size: 16px 16px;}
+.icon-gyeoljae-keepbox {background-image: url(../images/keepbox.png) !important; background-size: 16px 16px;}
+.icon-gyeoljae-overview {background-image: url(../images/overview.png) !important; background-size: 16px 16px;}
+.icon-gyeoljae-new {background-image: url(../images/add2.png) !important; background-size: 16px 16px;}
+.icon-bars-chart {background-image: url(../images/bars-chart.png) !important; background-size: 16px 16px;}
+.icon-organization {background-image: url(../images/organization.png) !important; background-size: 16px 16px;}
+.icon-approve {background-image: url(../images/approve.png) !important; background-size: 16px 16px;}
+.icon-team {background-image: url(../images/team.png) !important; background-size: 16px 16px;}
+.icon-reserved {background-image: url(../images/reserved.png) !important; background-size: 16px 16px;}
+.icon-timer {background-image: url(../images/timer.png) !important; background-size: 16px 16px;}
+.icon-calendar {background-image: url(../images/calendar.png) !important; background-size: 16px 16px;}
+.icon-project {background-image: url(../images/project.png) !important; background-size: 16px 16px;}
+.icon-dongrim {background-image: url(../images/logo.png) !important; background-size: 16px 16px;}
+.icon-regist {background-image: url(../images/regist.png) !important; background-size: 16px 16px;}
+.icon-login {background-image: url(../images/login.png) !important; background-size: 16px 16px;}
+.icon-myproject {background-image: url(../images/myproject.png) !important; background-size: 16px 16px;}
+.icon-print {background-image: url(../images/printer.png) !important; background-size: 16px 16px;}
+.icon-lamp {background-image: url(../images/lamp.png) !important; background-size: 16px 16px;}
+.icon-company-calendar {background-image: url(../images/company-calendar.png) !important; background-size: 16px 16px;}
+.icon-docs {background-image: url(../images/docs.png) !important; background-size: 16px 16px;}
+.icon-help {background-image: url(../images/help.png) !important; background-size: 16px 16px;}
+.icon-vacation {background-image: url(../images/vacation.png) !important; background-size: 16px 16px;}
+.icon-email {background-image: url(../images/email.png) !important; background-size: 16px 16px;}
+.icon-overwork-history {background-image: url(../images/overworklist.png) !important; background-size: 16px 16px;}
+.icon-camera {background-image: url(../images/camera.png) !important; background-size: 16px 16px;}
+.icon-jijeokdo {background-image: url(../images/jijeokdo.png) !important; background-size: 16px 16px;}

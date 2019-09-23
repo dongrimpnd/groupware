@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.geuntaeMapper">
+	
+	<select id="selectCurrentTime10" resultType="string">
+		select convert(char(19), dateadd(minute, -10, getDate()), 20) 
+	</select>
+	
+	<insert id="insertGotowork" statementType="CALLABLE" parameterType="Geuntae">
+		{call [동림].[dbo].[UP_출근처리](
+			#{sawonCode, mode=IN, jdbcType=VARCHAR, javaType=string},
+			#{outworkYN, mode=IN, jdbcType=CHAR, javaType=string},
+			#{gotoworkMethod, mode=IN, jdbcType=CHAR, javaType=string},
+			#{lat, mode=IN, jdbcType=FLOAT, javaType=float},
+			#{lng, mode=IN, jdbcType=FLOAT, javaType=float},
+			#{gotoworkTime, mode=OUT, jdbcType=VARCHAR, javaType=string},
+			#{geuntaeCode, mode=OUT, jdbcType=VARCHAR, javaType=string}
+		)}
+	</insert>
+	
+	<update id="updateOffwork" statementType="CALLABLE" parameterType="Geuntae">
+		{call [동림].[dbo].[UP_퇴근처리](
+			#{sawonCode, mode=IN, jdbcType=VARCHAR, javaType=string},
+			#{offworkMethod, mode=IN, jdbcType=CHAR, javaType=string},
+			#{lat, mode=IN, jdbcType=FLOAT, javaType=float},
+			#{lng, mode=IN, jdbcType=FLOAT, javaType=float},
+			#{workContent, mode=IN, jdbcType=VARCHAR, javaType=string},
+			#{outworkContent, mode=IN, jdbcType=VARCHAR, javaType=string},
+			#{overworkType, mode=IN, jdbcType=INTEGER, javaType=int},
+			#{startFrom6, mode=IN, jdbcType=CHAR, javaType=string},
+			#{offworkTime, mode=OUT, jdbcType=VARCHAR, javaType=string},
+			#{gotoworkTime, mode=OUT, jdbcType=VARCHAR, javaType=string}
+		)}
+	</update>
+	
+	<update id="updateAutoOffwork" statementType="CALLABLE">
+		{call [동림].[dbo].[UP_자동퇴근처리]}
+	</update>
+	
+	<select id="selectMyTodayGotowork" parameterType="string" resultType="map">
+		select count(근태코드) as cnt, datepart(hour, getDate()) as hr
+		  from [동림].[dbo].[근태]
+		 where 사원코드 = #{sawonCode}
+		   and DATEDIFF(DD, getDate(), 출근시간) = 0
+		   
+<!-- 		   select count(근태코드) as cnt, datepart(hour, getDate()) as hr -->
+<!-- 		  from [동림].[dbo].[근태] -->
+<!-- 		 where 사원코드 = #{sawonCode} -->
+<!-- 		   and DATEDIFF(DD, '2019-02-15 00:00:00', 출근시간) = 0 -->
+	</select>
+	
+	<select id="selectMyYesterdayOffwork"  parameterType="string" resultType="string">
+		select case when 퇴근시간  is null then 'N'
+			   else 'Y'
+			   end as 퇴근
+		  from [동림].[dbo].[근태] 
+		 where 사원코드 = #{sawonCode} 
+		   and DATEDIFF(DD, getDate(), 출근시간) = -1
+		   
+<!-- 		   select case when 퇴근시간  is null then 'N' -->
+<!-- 			   else 'Y' -->
+<!-- 			   end as 퇴근 -->
+<!-- 		  from [동림].[dbo].[근태]  -->
+<!-- 		 where 사원코드 = #{sawonCode}  -->
+<!-- 		   and DATEDIFF(DD, '2019-02-15 00:00:00', 출근시간) = -1 -->
+	</select>
+	
+	<select id="selectMyYesterdayOffworkNotAuto" parameterType="string" resultType="int">
+		select count(근태코드)
+		  from [동림].[dbo].[근태]
+		 where 사원코드 = #{sawonCode}
+		   and DATEDIFF(DD, getDate(), 출근시간) = -1
+		   and 자동퇴근처리여부  is null
+	</select>
+	
+	<select id="selectMyYesterdayGotowork"  parameterType="string" resultType="int">
+		select count(출근시간)
+		  from [동림].[dbo].[근태] 
+		 where 사원코드 = #{sawonCode} 
+		   and DATEDIFF(DD, getDate(), 출근시간) = -1
+		   
+<!-- 		   select case when 퇴근시간  is null then 'N' -->
+<!-- 			   else 'Y' -->
+<!-- 			   end as 퇴근 -->
+<!-- 		  from [동림].[dbo].[근태]  -->
+<!-- 		 where 사원코드 = #{sawonCode}  -->
+<!-- 		   and DATEDIFF(DD, '2019-02-15 00:00:00', 출근시간) = -1 -->
+	</select>
+	
+	<select id="selectTime" parameterType="map" resultType="int">
+		<choose>
+		<when test="type == 'HOUR'">
+		select datepart(HOUR, getDate())
+		</when>
+		<when test="type == 'MINUTE'">
+		select datepart(MINUTE, getDate())
+		</when>
+		</choose>
+	</select>
+	
+	<select id="selectMyTodayOffwork" parameterType="int" resultType="int">
+		select [동림].[dbo].[UF_퇴근처리](#{sawonCode})
+<!-- 		select [동림].[dbo].[UF_퇴근처리_테스트](#{sawonCode}) -->
+	</select>
+	
+	<select id="selectGeuntaeDetail" parameterType="map" resultMap="RM_GeuntaeDetail">
+	{call [동림].[dbo].[UP_근태상세](
+		#{sawonCode, mode=IN, jdbcType=INTEGER, javaType=int},
+		#{geuntaeCode, mode=IN, jdbcType=INTEGER, javaType=int}
+	)}
+	</select>
+	
+	<resultMap type="map" id="RM_GeuntaeDetail">
+		<result column="근태코드" property="code" javaType="int"/>
+		<result column="출근시간" property="gotowork" javaType="string"/>
+		<result column="퇴근시간" property="offwork" javaType="string"/>
+		<result column="팀명" property="teamName" javaType="string"/>
+		<result column="팀리더" property="teamLeader" javaType="string"/>
+		<result column="외근여부" property="outwork" javaType="string"/>
+		<result column="근태출근처리수단" property="gotoworkMethod" javaType="string"/>
+		<result column="업무내용" property="content" javaType="string"/>
+		<result column="야근내용" property="overworkContent" javaType="string"/>
+		<result column="사원명" property="sawonName" javaType="string"/>
+		<result column="야근6시부터" property="startFrom6" javaType="string"/>
+		<result column="위도" property="lat" javaType="float"/>
+		<result column="경도" property="lng" javaType="float"/>
+		<result column="팀바탕색" property="teamBgcolor" javaType="string" />
+		<result column="팀글자색" property="teamTextColor" javaType="string" />
+	</resultMap>
+	
+	<update id="updateGeuntae" parameterType="map">
+		update [동림].[dbo].[근태]
+		   set 업무내용 = #{content},
+		                 야근내용 = #{overworkContent},
+		                 야근6시부터 = #{startFrom6}
+		 where 근태코드 = #{geuntaeCode}
+		   and 사원코드 = #{sawonCode}
+	</update>
+	
+	<select id="selectTeamList" parameterType="string" resultType="Team">
+		select 팀명 as teamName, 바탕색 as teamBackColor, 글자색 as teamFontColor
+		  from [동림].[dbo].[팀]
+		 where 부서코드 = #{teamCode}
+		 order by 순서
+	</select>
+	
+	<update id="updateGeuntaeOutworkToIn" parameterType="map">
+		update [동림].[dbo].[근태]
+		   set 외근여부 = 'N',
+		                 근태출근처리수단 = 'P'
+		 where 근태코드 = #{geuntaeCode}
+		   and 사원코드 = #{sawonCode}
+		   and 외근여부 = 'Y'
+	</update>
+	
+	<update id="updateGeuntaeInworkToOut" parameterType="map">
+		update [동림].[dbo].[근태]
+		   set 외근여부 = 'Y',
+		                 근태출근처리수단 = 'P'
+		 where 근태코드 = #{geuntaeCode}
+		   and 사원코드 = #{sawonCode}
+		   and 외근여부 = 'N'
+	</update>
+</mapper>

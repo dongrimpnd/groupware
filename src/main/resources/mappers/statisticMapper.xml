@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.statisticMapper">
+	
+	<resultMap id="RM_TeamOverwork" type="map">
+		<result column="팀코드" property="teamCode" />
+		<result column="팀명" property="teamName" />
+		<result column="팀야근시간" property="time" />
+	</resultMap>
+	
+	<resultMap id="RM_SawonOverwork" type="map">
+		<result column="사원코드" property="sawonCode" />
+		<result column="팀코드" property="teamCode" />
+		<result column="팀리더" property="teamLeader" />
+		<result column="야근시간" property="time" />
+		<result column="사원명" property="sawonName" />
+	</resultMap>
+	
+	<resultMap id="RM_TeamMonthOverwork" type="map">
+		<result column="팀코드" property="teamCode" />
+		<result column="팀명" property="teamName" />
+		<result column="팀야근시간" property="time" />
+		<result column="출근월" property="month" />
+		<result column="팀칼라" property="color" />
+	</resultMap>
+	
+	<select id="selectOverwork" statementType="CALLABLE" parameterType="map" resultMap="RM_TeamOverwork, RM_SawonOverwork">
+	<choose>
+	<when test="weekend == null">
+	{ call [동림].[dbo].[UP_야근통계](
+		#{sawonCode, mode=IN, jdbcType=INTEGER, javaType=int},
+		#{searchYear, mode=IN, jdbcType=INTEGER, javaType=int},
+		#{searchMonth, mode=IN, jdbcType=INTEGER, javaType=int}
+	)}
+	</when>
+	<otherwise>
+	{ call [동림].[dbo].[UP_주말야근통계](
+		#{sawonCode, mode=IN, jdbcType=INTEGER, javaType=int},
+		#{searchYear, mode=IN, jdbcType=INTEGER, javaType=int},
+		#{searchMonth, mode=IN, jdbcType=INTEGER, javaType=int}
+	)}
+	</otherwise>
+	</choose>
+	</select>
+	
+	<select id="selectOverworkMonth" statementType="CALLABLE" parameterType="map" resultMap="RM_TeamMonthOverwork">
+	<choose>
+	<when test="weekend == null">
+	{ call [동림].[dbo].[UP_팀별월간야근통계](
+		#{sawonCode, mode=IN, jdbcType=INTEGER, javaType=int},
+		#{searchYear, mode=IN, jdbcType=INTEGER, javaType=int}
+	)}
+	</when>
+	<otherwise>
+	{ call [동림].[dbo].[UP_팀별월간주말야근통계](
+		#{sawonCode, mode=IN, jdbcType=INTEGER, javaType=int},
+		#{searchYear, mode=IN, jdbcType=INTEGER, javaType=int}
+	)}
+	</otherwise>
+	</choose>
+	
+	</select>
+</mapper>

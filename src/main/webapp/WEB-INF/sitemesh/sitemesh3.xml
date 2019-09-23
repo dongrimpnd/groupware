@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	<content-processor>
+        <tag-rule-bundle class="org.sitemesh.content.tagrules.html.Sm2TagRuleBundle" />
+    </content-processor>
+
+	<mapping path="/gyeoljae/*" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/calendar/view" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/calendar/view/companyevent" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/view/orgchart" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/view/photos" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/signatureview" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/project/newwbs" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/project/mywbs" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/project/listwbs" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/floormap" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/reservation" decorator="/WEB-INF/views/layout/defaultiframe.jsp" />
+	<mapping path="/m/*" decorator="/WEB-INF/views/layout/defaultmobile.jsp" />
+	<mapping path="/calendar/m/*" decorator="/WEB-INF/views/layout/defaultmobile.jsp" />
+	<mapping path="/gyeoljae/m/*" decorator="/WEB-INF/views/layout/defaultmobile.jsp" />
+	<mapping path="/help/*" decorator="/WEB-INF/views/layout/defaulthelp.jsp" />
+	<mapping path="/*" decorator="/WEB-INF/views/layout/default.jsp" />
+	
+	<mapping path="/forbidden" exclude="true" />
+	<mapping path="/signin" exclude="true" />
+	<mapping path="/result" exclude="true" />
+	<mapping path="/app/m/*" exclude="true" />
+	<mapping path="/doc/*" exclude="true" />
+	<mapping path="/gyeoljae/m/content/*" exclude="true" />
+</sitemesh>

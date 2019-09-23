@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.codeMapper">
+	
+		
+	<resultMap id="RM_Department" type="Department">
+		<result column="부서코드"		property="departmentCode"	javaType="string"/>
+		<result column="부서명"		property="departmentName"	javaType="string"/>
+	</resultMap>
+	
+	<resultMap id="RM_Team" type="Team">
+		<result column="팀코드"		property="teamCode"			javaType="string"/>
+		<result column="팀명"			property="teamName"			javaType="string"/>
+	</resultMap>
+	
+	<resultMap id="RM_Position" type="Position">
+		<result column="직급코드"		property="positionCode"			javaType="string"/>
+		<result column="직급명"		property="positionName"			javaType="string"/>
+		<result column="직급구별"		property="positionGubun"		javaType="string"/>
+	</resultMap>
+	
+	<resultMap id="RM_Overwork" type="map">
+		<result column="코드"		property="overworkCode"			javaType="string"/>
+		<result column="이름"		property="overworkName"			javaType="string"/>
+	</resultMap>
+	
+	<select id="selectDepartment" resultMap="RM_Department">
+		select 부서코드, 부서명 
+		  from [동림].[dbo].[부서]
+	</select>
+	
+	<select id="selectTeam"  parameterType="string"  resultMap="RM_Team">
+		select 팀코드, 팀명 
+		  from [동림].[dbo].[팀]
+		 where 부서코드 = #{departmentCode}
+		 order by 순서
+	</select>
+	
+	<select id="selectPosition" resultMap="RM_Position">
+		select 직급코드, 직급명, 직급구별
+		  from [동림].[dbo].[직급]
+	</select>
+	
+	<select id="selectOverwork" resultMap="RM_Overwork">
+		select 0 코드, '정시퇴근' 이름
+		 union all
+		select 코드, 이름
+		  from [동림].[dbo].[야근타입]
+		 where 적용범위 = 'A'
+	</select>
+	
+	<select id="selectGyeoljae" resultType="map">
+		select 코드 code, 이름  name
+		  from [동림].[dbo].[결재타입]
+	</select>
+	
+</mapper>
