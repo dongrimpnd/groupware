@@ -23,7 +23,7 @@ Ext.define('Drpnd.store.WeekendTeamMonthStatisticListStore',  {
 	          '계획4팀',
 	          '계획5팀',
 	          '계획6팀',
-	          'e-biz팀',
+	          /*'e-biz팀',*/
 	          '디자인팀'
 	       ],
 	autoLoad : false
