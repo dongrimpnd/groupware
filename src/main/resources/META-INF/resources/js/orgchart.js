@@ -7,7 +7,7 @@ $(document).ready(function() {
 		position: '대표이사',
 		team: 'imwon',
 		leader: 'N',
-		name: '이석우',
+		name: '이석우', 
 		  //'relationship': relationshipValue, // Note: when you activate ondemand loading nodes feature,
 		  // you should use json datsource (local or remote) and set this property.
 		  // This property implies that whether this node has parent node, siblings nodes or children nodes.
