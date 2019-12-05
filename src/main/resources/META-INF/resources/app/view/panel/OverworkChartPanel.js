@@ -113,7 +113,7 @@ Ext.define('Drpnd.view.panel.OverworkChartPanel', {
 			axes: [{
 				type: 'Numeric',
 				position: 'bottom',
-				fields: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4'],
+				fields: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4', 'sawon5', 'sawon6'],
 				minimum: 0,
 				label: {
                     renderer: Ext.util.Format.numberRenderer('0,0')
@@ -142,14 +142,14 @@ Ext.define('Drpnd.view.panel.OverworkChartPanel', {
                 },
                 label: {
                 	display: 'insideEnd',
-                    field: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4'],
+                    field: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4', 'sawon5', 'sawon6'],
                     renderer: Ext.util.Format.numberRenderer('0'),
                     orientation: 'horizontal',
                     color: '#333',
                     'text-anchor': 'middle'
                 },
-                yField: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4'],
-                title: ['팀별 총야근시간', '팀장', '팀원1', '팀원2', '팀원3', '팀원4'],
+                yField: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4', 'sawon5', 'sawon6'],
+                title: ['팀별 총야근시간', '팀장', '팀원1', '팀원2', '팀원3', '팀원4', '팀원5', '팀원6'],
             }]
 			
 		});
@@ -168,7 +168,7 @@ Ext.define('Drpnd.view.panel.OverworkChartPanel', {
 			axes: [{
 				type: 'Numeric',
 				position: 'bottom',
-				fields: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4'],
+				fields: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4', 'sawon5', 'sawon6'],
 				minimum: 0,
 				label: {
                     renderer: Ext.util.Format.numberRenderer('0,0')
@@ -197,14 +197,14 @@ Ext.define('Drpnd.view.panel.OverworkChartPanel', {
                 },
                 label: {
                 	display: 'insideEnd',
-                    field: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4'],
+                    field: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4', 'sawon5', 'sawon6'],
                     renderer: Ext.util.Format.numberRenderer('0'),
                     orientation: 'horizontal',
                     color: '#333',
                     'text-anchor': 'middle'
                 },
-                yField: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4'],
-                title: ['팀별 총야근시간', '팀장', '팀원1', '팀원2', '팀원3', '팀원4'],
+                yField: ['teamTotal', 'teamLeader', 'sawon1', 'sawon2', 'sawon3', 'sawon4', 'sawon5', 'sawon6'],
+                title: ['팀별 총야근시간', '팀장', '팀원1', '팀원2', '팀원3', '팀원4', '팀원5', '팀원6'],
             }]
 			
 		});

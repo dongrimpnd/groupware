@@ -30,6 +30,8 @@ Ext.define('Drpnd.store.StatisticListStore',  {
 	          'sawon4', 
 	          'sawon4_tips', 
 	          'sawon5',
-	          'sawon5_tips'],
+	          'sawon5_tips',
+	          'sawon6',
+	          'sawon6_tips'],
 	autoLoad : false
 });
