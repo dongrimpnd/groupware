@@ -20,8 +20,8 @@
 	  .team2_title {background-color:#006400; color:#ffd700; margin-bottom:10px;}
 	  .team3 {background-color:#9932cc; color:#e6e6fa;}
 	  .team3_title {background-color:#9932cc; color:#e6e6fa; margin-bottom:10px;}
-	  .team4 {background-color:#CD0000; color:#FFE641;}
-	  .team4_title {background-color:#CD0000; color:#FFE641; margin-bottom:10px;}
+	  .team4 {background-color:#CC6600; color:#FFFFFF;}
+	  .team4_title {background-color:#CC6600; color:#FFFFFF; margin-bottom:10px;}
 	  .team5 {background-color:#0000ff; color:#ffffff;}
 	  .team5_title {background-color:#0000ff; color:#ffffff; margin-bottom:10px;}
 	  .team6 {background-color:#FFD700; color:#0000ff;}
